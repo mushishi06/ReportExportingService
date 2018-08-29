@@ -34,8 +34,6 @@ GREY_2 = colors.CMYKColor(0.0909, 0.0455, 0.0000, 0.5686)  # Grey 2:#64696e
 def create_pdf(reportid, data):
     """Generate the Report PDF and return pdf."""
     buf = StringIO()
-    print ("reports id = ", reportid)
-
     pdftools = PdfTools(buffer=buf,
                         data=data,
                         reportid=reportid,

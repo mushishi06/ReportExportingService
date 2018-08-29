@@ -72,8 +72,21 @@ class MyTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn(b'data', result.data)
         self.assertIn(b'organization', result.data)
+        self.assertIn('text/xml', result.headers['Content-Type'])
 
     def test_existant_report_xml_headers(self):
+        """Test non existant id reports."""
+        headers = {}
+        headers['Content-Type'] = 'text/xml'
+
+        result = self.app.get('/reports/1', headers=headers)
+
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'data', result.data)
+        self.assertIn(b'organization', result.data)
+        self.assertIn('text/xml', result.headers['Content-Type'])
+
+    def test_xml_headers_xml_format(self):
         """Test non existant id reports."""
         headers = {}
         headers['Content-Type'] = 'text/xml'
@@ -85,6 +98,39 @@ class MyTests(unittest.TestCase):
         self.assertIn(b'organization', result.data)
         self.assertIn('text/xml', result.headers['Content-Type'])
 
+    def test_xml_headers_pdf_format(self):
+        """Test non existant id reports."""
+        headers = {}
+        headers['Content-Type'] = 'text/xml'
+
+        result = self.app.get('/reports/1?format=pdf', headers=headers)
+
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'data', result.data)
+        self.assertIn(b'organization', result.data)
+        self.assertIn('text/xml', result.headers['Content-Type'])
+
+    def test_pdl_headers_xml_format(self):
+        """Test non existant id reports."""
+        headers = {}
+        headers['Content-Type'] = 'application/pdf'
+
+        result = self.app.get('/reports/1?format=xml', headers=headers)
+
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'PDF', result.data)
+        self.assertIn('application/pdf', result.headers['Content-Type'])
+
+    def test_pdl_headers_pdf_format(self):
+        """Test non existant id reports."""
+        headers = {}
+        headers['Content-Type'] = 'application/pdf'
+
+        result = self.app.get('/reports/1?format=pdf', headers=headers)
+
+        self.assertEqual(result.status_code, 200)
+        self.assertIn(b'PDF', result.data)
+        self.assertIn('application/pdf', result.headers['Content-Type'])
 
 if __name__ == '__main__':
     unittest.main()
